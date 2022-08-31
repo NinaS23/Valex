@@ -3,6 +3,7 @@ import * as employeeRepository from "../repositories/employeeRepository.js";
 import * as cardRepository from "../repositories/cardRepository.js";
 import * as cardUtils from "../utils/cardUtils.js";
 import dayjs from "dayjs";
+import Cryptr from "cryptr";
 import { faker } from '@faker-js/faker';
 
 export async function createCard(apiKey: string, employeeId: number, type: cardRepository.TransactionTypes) {
@@ -58,8 +59,31 @@ export async function activateCard(cardId: number, password: string, CVC: number
 }
 
 export async function viewCard(employeeId: number, password: string) {
-    
+    const cryptr = new Cryptr(process.env.CRYPTR_KEY);
+    const cardArr = []
+    const result = await cardRepository.findByEmployeeId(employeeId)
+   
+    if(!result){
+        throw { code: "not-found", message: "no card found" }
+    }
+    if(password.length !== 4){
+        throw { code: "unauthorized", message: "verify your password"  }
+    }
+    const employeeCards = result.filter(card => {
+        if (card.password !== null && cryptr.decrypt(card.password) === password) {
+            const cvc = cryptr.decrypt(card.securityCode)
+            const cards =  [{
+                number:card.number,
+                cardholderName:card.cardholderName,
+                expirationDate: card.expirationDate,
+                securityCode: cvc
+               }]
+               cardArr.push(cards)
+        }
+        
+    });
 
+    return cardArr;
 }
 
 
