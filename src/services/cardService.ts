@@ -38,7 +38,7 @@ export async function createCard(apiKey: string, employeeId: number, type: cardR
         isBlocked: false,
         type
     }//mudar na ativação
-
+ return card
 }
 
 
