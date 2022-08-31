@@ -4,9 +4,9 @@ import * as cardService from "../services/cardService.js"
 
 export async function createCard(req:Request,res: Response){
     const apiKey = req.header('x-api-key');
-    let  {employeeId} : {employeeId:number} = req.body;
+    const {employeeId} : {employeeId:number} = req.body;
 
     await cardService.createCard(apiKey,employeeId);
-    
+
     res.sendStatus(httpStatus.OK)
 }
