@@ -1,7 +1,8 @@
 import * as companyRepository from "../repositories/companyRepository.js";
 import * as employeeRepository from "../repositories/employeeRepository.js";
 import * as cardRepository from "../repositories/cardRepository.js";
-import * as cardUtils from "../utils/cardUtils.js"
+import * as cardUtils from "../utils/cardUtils.js";
+import dayjs from "dayjs";
 import { faker } from '@faker-js/faker';
 
 export async function validateCard(apiKey: string, employeeId: number, type: cardRepository.TransactionTypes) {
@@ -21,11 +22,17 @@ export async function validateCard(apiKey: string, employeeId: number, type: car
  
     const employerName = await cardUtils.getFullName(findEmployer.fullName);
     const cardNumber = faker.finance.creditCardNumber();
+    const expirationDate = dayjs().add(5, 'year').format("MM-YYYY");
+    const code = faker.random.numeric(3);
+    const cryptCode = await cardUtils.encryptCardCVC(code)
 
     const card = {
         employeeId: employeeId,
         number: cardNumber,
-        cardholderName: employerName
+        cardholderName: employerName,
+        SecurityCode: cryptCode,
+        expirationDate:expirationDate
+
 
     }
 

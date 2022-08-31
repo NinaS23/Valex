@@ -1,4 +1,6 @@
-import * as employeeRepository from "../repositories/employeeRepository.js";
+import Cryptr from "cryptr";
+import dotenv from "dotenv";
+dotenv.config()
 
 export async function getFullName(fullName: string) {
   const strListName = fullName.trim().split(" ")
@@ -14,4 +16,11 @@ export async function getFullName(fullName: string) {
 
   return name
 
+}
+
+
+export async function encryptCardCVC(encode:string){
+  const cryptr = new Cryptr(process.env.CRYPTR_KEY);
+  const encryptedString = cryptr.encrypt(encode);
+  return encryptedString;
 }
