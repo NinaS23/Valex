@@ -11,7 +11,6 @@ export async function createCard(apiKey: string, employeeId: number, type: cardR
         throw { code: "not-found", message: "api-key is not Found" }
     }
     const findEmployer = await employeeRepository.findById(employeeId)
-
     if (!findEmployer) {
         throw { code: "not-found", message: "employer not found" }
     }
