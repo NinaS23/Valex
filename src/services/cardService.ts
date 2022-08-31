@@ -5,7 +5,7 @@ import * as cardUtils from "../utils/cardUtils.js";
 import dayjs from "dayjs";
 import { faker } from '@faker-js/faker';
 
-export async function validateCard(apiKey: string, employeeId: number, type: cardRepository.TransactionTypes) {
+export async function createCard(apiKey: string, employeeId: number, type: cardRepository.TransactionTypes) {
     const findAPiKey = await companyRepository.findByApiKey(apiKey)
     if (!findAPiKey) {
         throw { code: "not-found", message: "api-key is not Found" }
