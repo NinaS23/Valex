@@ -18,3 +18,10 @@ export async function activateCard(req:Request,res: Response) {
 
     res.sendStatus(httpStatus.OK)
 }
+
+
+export async function viewCard(req:Request,res: Response) {
+    const {password,employeeId} : {password : string,employeeId:number} = req.body;
+
+    res.sendStatus(httpStatus.OK)
+}
