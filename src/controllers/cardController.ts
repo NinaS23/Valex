@@ -13,8 +13,8 @@ export async function createCard(req:Request,res: Response){
 }
 
 export async function activateCard(req:Request,res: Response) {
-    const {cardId } : {cardId : number} = req.body;
-    await cardService.activateCard(cardId);
+    const {cardId,password,CVC } : {cardId : number, password: string, CVC: number} = req.body;
+    await cardService.activateCard(cardId,password,CVC);
 
     res.sendStatus(httpStatus.OK)
 }

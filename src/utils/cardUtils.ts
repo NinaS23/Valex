@@ -1,5 +1,6 @@
 import Cryptr from "cryptr";
 import dotenv from "dotenv";
+import dayjs from "dayjs";
 dotenv.config()
 
 export async function getFullName(fullName: string) {
@@ -23,4 +24,24 @@ export async function encryptCardCVC(encode:string){
   const cryptr = new Cryptr(process.env.CRYPTR_KEY);
   const encryptedString = cryptr.encrypt(encode);
   return encryptedString;
+}
+
+export async function isCardExpired(date:string){
+  const actualDate = dayjs().format("MM-YYYY").toString();
+
+  if(actualDate > date){
+    throw{ code: "unauthorized",message: "card is expired"}
+   
+  }
+}
+
+export async function decryptCode(code:any, encode: string ){
+  const cryptr = new Cryptr(process.env.CRYPTR_KEY);
+  const decrypt = cryptr.decrypt(encode);
+
+  if(decrypt !== code){
+    throw{ code: "unauthorized",message: "verify your CVC"}
+  }
+  
+  return true;
 }

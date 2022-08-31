@@ -18,19 +18,19 @@ export async function createCard(apiKey: string, employeeId: number, type: cardR
     if (verifyTypeCard) {
         throw { code: "unauthorized", message: "you alredy have that type of card" }
     }
- 
+
     const employerName = await cardUtils.getFullName(findEmployer.fullName);
     const cardNumber = faker.finance.creditCardNumber();
     const expirationDate = dayjs().add(5, 'year').format("MM-YYYY");
     const code = faker.random.numeric(3);
     const cryptCode = await cardUtils.encryptCardCVC(code)
 
-    const card: cardRepository.CardInsertData  = {
+    const card: cardRepository.CardInsertData = {
         employeeId: employeeId,
         number: cardNumber,
         cardholderName: employerName,
         securityCode: cryptCode,
-        expirationDate:expirationDate,
+        expirationDate: expirationDate,
         password: null,
         isVirtual: false,
         originalCardId: null,
@@ -43,11 +43,19 @@ export async function createCard(apiKey: string, employeeId: number, type: cardR
 }
 
 
-export async function activateCard(cardId: number) {
+export async function activateCard(cardId: number, password: string, CVC: number) {
     const card = await cardRepository.findById(cardId);
-    if(!card){
-        throw {code: "not-found", message:"card was not found"}
+    if (!card) {
+        throw { code: "not-found", message: "card was not found" }
     }
+    if (card.password !== null) {
+        throw { code: "unauthorized", message: "password alredy exist" }
+    }
+    await cardUtils.isCardExpired(card.expirationDate);
+    const decrypt  = await cardUtils.decryptCode(CVC, card.securityCode);
+
+
+
 }
 
 
