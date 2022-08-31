@@ -52,9 +52,8 @@ export async function activateCard(cardId: number, password: string, CVC: number
         throw { code: "unauthorized", message: "password alredy exist" }
     }
     await cardUtils.isCardExpired(card.expirationDate);
-    const decrypt  = await cardUtils.decryptCode(CVC, card.securityCode);
-
-
+    await cardUtils.decryptCode(CVC, card.securityCode);
+    await cardUtils.verifyPassword(password,cardId)
 
 }
 

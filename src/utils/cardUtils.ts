@@ -1,6 +1,7 @@
 import Cryptr from "cryptr";
 import dotenv from "dotenv";
 import dayjs from "dayjs";
+import { update } from "../repositories/cardRepository.js";
 dotenv.config()
 
 export async function getFullName(fullName: string) {
@@ -40,8 +41,17 @@ export async function decryptCode(code:any, encode: string ){
   const decrypt = cryptr.decrypt(encode);
 
   if(decrypt !== code){
-    throw{ code: "unauthorized",message: "verify your CVC"}
+    throw { code: "unauthorized", message: "verify your CVC" }
   }
-  
-  return true;
+}
+
+export async function verifyPassword(password: string, cardId: number) {
+  const cryptr = new Cryptr(process.env.CRYPTR_KEY);
+  if (password.length === 4) {
+    const encryptPass = cryptr.encrypt(password)
+    await update(cardId, { password: encryptPass });
+    return { status: "updated" };
+  } else {
+    throw { code: "unauthorized", message: "your password must be 4 characters " }
+  }
 }
