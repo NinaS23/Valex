@@ -37,9 +37,17 @@ export async function createCard(apiKey: string, employeeId: number, type: cardR
         isBlocked: false,
         type
     }//mudar na ativação
-     await cardRepository.insert(card);
- 
+    await cardRepository.insert(card);
+
     return card;
+}
+
+
+export async function activateCard(cardId: number) {
+    const card = await cardRepository.findById(cardId);
+    if(!card){
+        throw {code: "not-found", message:"card was not found"}
+    }
 }
 
 
