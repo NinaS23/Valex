@@ -57,4 +57,9 @@ export async function activateCard(cardId: number, password: string, CVC: number
 
 }
 
+export async function viewCard(employeeId: number, password: string) {
+    
+
+}
+
 

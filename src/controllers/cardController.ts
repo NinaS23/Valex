@@ -22,6 +22,6 @@ export async function activateCard(req:Request,res: Response) {
 
 export async function viewCard(req:Request,res: Response) {
     const {password,employeeId} : {password : string,employeeId:number} = req.body;
-
+    await cardService.viewCard(employeeId,password);
     res.sendStatus(httpStatus.OK)
 }

@@ -9,6 +9,6 @@ const cardRouter = Router()
 
 cardRouter.post("/create-card",validateCardInfo,createCard );
 cardRouter.post("/activate-card",activateCard );
-cardRouter.get("/view-card",viewCard );
+cardRouter.post("/view-card",viewCard );
 
 export default cardRouter;
