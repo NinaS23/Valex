@@ -31,10 +31,13 @@ export async function validateCard(apiKey: string, employeeId: number, type: car
         number: cardNumber,
         cardholderName: employerName,
         SecurityCode: cryptCode,
-        expirationDate:expirationDate
-
-
-    }
+        expirationDate:expirationDate,
+        password: null,
+        isVirtual: false,
+        originalCardId: null,
+        isBlocked: false,
+        type
+    }//mudar na ativação
 
 }
 
