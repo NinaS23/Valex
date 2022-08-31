@@ -54,7 +54,7 @@ export async function activateCard(cardId: number, password: string, CVC: number
     }
     await cardUtils.isCardExpired(card.expirationDate);
     await cardUtils.decryptCode(CVC, card.securityCode);
-    await cardUtils.verifyPassword(password,cardId)
+    await cardUtils.verifyPassword(password, cardId)
 
 }
 
@@ -62,28 +62,34 @@ export async function viewCard(employeeId: number, password: string) {
     const cryptr = new Cryptr(process.env.CRYPTR_KEY);
     const cardArr = []
     const result = await cardRepository.findByEmployeeId(employeeId)
-   
-    if(!result){
+
+    if (!result) {
         throw { code: "not-found", message: "no card found" }
     }
-    if(password.length !== 4){
-        throw { code: "unauthorized", message: "verify your password"  }
+    if (password.length !== 4) {
+        throw { code: "unauthorized", message: "verify your password" }
     }
-     result.filter(card => {
+    result.filter(card => {
         if (card.password !== null && cryptr.decrypt(card.password) === password) {
             const cvc = cryptr.decrypt(card.securityCode)
-            const cards =  {
-                number:card.number,
-                cardholderName:card.cardholderName,
+            const actualDate = dayjs().format("MM-YYYY").toString();
+
+            if (actualDate > card.expirationDate) {
+                throw { code: "unauthorized", message: "card is expired" }
+
+            }
+            const cards = {
+                number: card.number,
+                cardholderName: card.cardholderName,
                 expirationDate: card.expirationDate,
                 securityCode: cvc
-               }
-               cardArr.push(cards)
+            }
+            cardArr.push(cards)
         }
-        
+
     });
 
-    return {cards:cardArr};
+    return { cards: cardArr };
 }
 
 
