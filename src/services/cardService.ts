@@ -26,11 +26,11 @@ export async function createCard(apiKey: string, employeeId: number, type: cardR
     const code = faker.random.numeric(3);
     const cryptCode = await cardUtils.encryptCardCVC(code)
 
-    const card = {
+    const card: cardRepository.CardInsertData  = {
         employeeId: employeeId,
         number: cardNumber,
         cardholderName: employerName,
-        SecurityCode: cryptCode,
+        securityCode: cryptCode,
         expirationDate:expirationDate,
         password: null,
         isVirtual: false,
@@ -38,7 +38,9 @@ export async function createCard(apiKey: string, employeeId: number, type: cardR
         isBlocked: false,
         type
     }//mudar na ativação
- return card
+     await cardRepository.insert(card);
+ 
+    return card;
 }
 
 
