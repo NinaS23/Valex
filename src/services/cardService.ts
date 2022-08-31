@@ -69,21 +69,21 @@ export async function viewCard(employeeId: number, password: string) {
     if(password.length !== 4){
         throw { code: "unauthorized", message: "verify your password"  }
     }
-    const employeeCards = result.filter(card => {
+     result.filter(card => {
         if (card.password !== null && cryptr.decrypt(card.password) === password) {
             const cvc = cryptr.decrypt(card.securityCode)
-            const cards =  [{
+            const cards =  {
                 number:card.number,
                 cardholderName:card.cardholderName,
                 expirationDate: card.expirationDate,
                 securityCode: cvc
-               }]
+               }
                cardArr.push(cards)
         }
         
     });
 
-    return cardArr;
+    return {cards:cardArr};
 }
 
 
