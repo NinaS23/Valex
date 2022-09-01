@@ -75,7 +75,7 @@ export async function viewCard(employeeId: number, password: string) {
         if (card.password !== null && cryptr.decrypt(card.password) === password) {
             const cvc = cryptr.decrypt(card.securityCode)
             const actualDate = dayjs().format("MM-YYYY").toString();
-     
+
             if (actualDate < card.expirationDate) {
                 throw { code: "unauthorized", message: "card is expired" }
 
@@ -110,7 +110,21 @@ export async function viewTransectionAndBalance(cardId: number) {
     const balance = await cardUtils.calcBalance(recharges, shopping)
     return {
         balance,
-        transactions:shopping,
+        transactions: shopping,
         recharges
     }
 }
+
+export async function blockCard(cardId: number, password:string) {
+    const card = await cardRepository.findById(cardId);
+    if (!card) {
+        throw { code: "not-found", message: "card was not found" }
+    }
+    await cardUtils.isCardExpired(card.expirationDate);
+    if(card.isBlocked === true){
+        throw { code: "unauthorized", message: "your card is blocked" }
+    }
+    await cardUtils.verifyPassword(password,cardId)
+    await cardRepository.update(cardId, {isBlocked:true});
+    return {typeCard: "blocked card"}
+} 

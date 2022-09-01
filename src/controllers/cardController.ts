@@ -36,3 +36,10 @@ export async function viewTransectionAndBalance(req:Request,res: Response) {
 
     res.status(httpStatus.OK).send(balanceAndTransections)
 }
+
+export async function blockCard(req: Request, res: Response) {
+    const { password, cardId }: { password: string, cardId: number } = req.body;
+    const isBlocked = await cardService.blockCard(cardId, password);
+
+    res.status(httpStatus.OK).send(isBlocked)
+}

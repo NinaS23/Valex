@@ -30,12 +30,11 @@ export async function encryptCardCVC(encode:string){
 export async function isCardExpired(date:string){
   const actualDate = dayjs().format("MM-YYYY").toString();
 
-  if(actualDate > date){
+  if(actualDate < date){
     throw{ code: "unauthorized",message: "card is expired"}
    
   }
 }
-
 
 export async function decryptCode(code:any, encode: string ){
   const cryptr = new Cryptr(process.env.CRYPTR_KEY);
