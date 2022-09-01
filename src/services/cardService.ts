@@ -128,3 +128,18 @@ export async function blockCard(cardId: number, password:string) {
     await cardRepository.update(cardId, {isBlocked:true});
     return {typeCard: "blocked card"}
 } 
+
+
+export async function unlockCard(cardId: number, password:string) {
+    const card = await cardRepository.findById(cardId);
+    if (!card) {
+        throw { code: "not-found", message: "card was not found" }
+    }
+    await cardUtils.isCardExpired(card.expirationDate);
+    if(card.isBlocked === false){
+        throw { code: "unauthorized", message: "your card is not  blocked" }
+    }
+    await cardUtils.verifyPassword(password,cardId)
+    await cardRepository.update(cardId, {isBlocked:false});
+    return {typeCard: "unlocked card"}
+} 

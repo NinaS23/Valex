@@ -43,3 +43,10 @@ export async function blockCard(req: Request, res: Response) {
 
     res.status(httpStatus.OK).send(isBlocked)
 }
+
+export async function unlockCard(req: Request, res: Response) {
+    const { password, cardId }: { password: string, cardId: number } = req.body;
+    const isBlocked = await cardService.unlockCard(cardId, password);
+
+    res.status(httpStatus.OK).send(isBlocked)
+}
