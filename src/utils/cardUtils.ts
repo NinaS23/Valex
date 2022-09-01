@@ -41,7 +41,7 @@ export async function decryptCode(code:any, encode: string ){
   const decrypt = cryptr.decrypt(encode);
 
   if(decrypt !== code){
-    throw { code: "unauthorized", message: "verify your CVC" }
+    throw { code: "unauthorized", message: "verify your key" }
   }
 }
 
