@@ -57,7 +57,6 @@ export async function verifyPassword(password: string, cardId: number) {
 
 
 export async function calcBalance(rechages: any, transactions: any) {
-  console.log(rechages, transactions)
   let amountR: number = 0
   let amountT: number = 0
 
