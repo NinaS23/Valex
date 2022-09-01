@@ -109,7 +109,7 @@ export async function viewTransectionAndBalance(cardId: number) {
     const balance = await cardUtils.calcBalance(recharges, shopping)
     return {
         balance,
-        shopping,
+        transactions:shopping,
         recharges
     }
 }
