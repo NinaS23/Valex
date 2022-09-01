@@ -67,6 +67,6 @@ export async function calcBalance(rechages: any, transactions: any) {
     return amountT += e.amount;
   })
 
-  let balance: number = amountR = amountT;
+  let balance: number = amountR - amountT;
   return balance
 }
