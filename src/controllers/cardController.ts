@@ -3,6 +3,7 @@ import httpStatus from "../utils/httpStatus.js";
 import * as cardService from "../services/cardService.js";
 import * as cardRepository from "../repositories/cardRepository.js";
 
+
 export async function createCard(req:Request,res: Response){
     const apiKey = req.header('x-api-key');
     const {employeeId, type} : {employeeId:number, type: cardRepository.TransactionTypes} = req.body;
@@ -24,4 +25,14 @@ export async function viewCard(req:Request,res: Response) {
     const {password,employeeId} : {password : string,employeeId:number} = req.body;
     const cardView = await cardService.viewCard(employeeId,password);
     res.status(httpStatus.OK).send(cardView)
+}
+
+export async function viewTransectionAndBalance(req:Request,res: Response) {
+    const cardId = req.params.id;
+    if (!cardId ) {
+        return res.sendStatus(401);
+    }
+    const num = Number(cardId)
+    await cardService.viewTransectionAndBalance(num)
+    res.sendStatus(httpStatus.OK)
 }

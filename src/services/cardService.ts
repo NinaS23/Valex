@@ -1,6 +1,8 @@
 import * as companyRepository from "../repositories/companyRepository.js";
 import * as employeeRepository from "../repositories/employeeRepository.js";
 import * as cardRepository from "../repositories/cardRepository.js";
+import * as paymentRepository from "../repositories/paymentRepository.js";
+import * as rechargeRepository from "../repositories/rechargeRepository.js";
 import * as cardUtils from "../utils/cardUtils.js";
 import dayjs from "dayjs";
 import Cryptr from "cryptr";
@@ -93,3 +95,16 @@ export async function viewCard(employeeId: number, password: string) {
 }
 
 
+export async function viewTransectionAndBalance(cardId: number) {
+    const card = await cardRepository.findById(cardId);
+    if (!card) {
+        throw { code: "not-found", message: "card was not found" }
+    }
+    const transactions = await paymentRepository.findByCardId(cardId);
+    const recharges = await rechargeRepository.findByCardId(cardId);
+     
+    
+
+   console.log(transactions,recharges)
+
+}
