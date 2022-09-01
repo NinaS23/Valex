@@ -36,6 +36,7 @@ export async function isCardExpired(date:string){
   }
 }
 
+
 export async function decryptCode(code:any, encode: string ){
   const cryptr = new Cryptr(process.env.CRYPTR_KEY);
   const decrypt = cryptr.decrypt(encode);

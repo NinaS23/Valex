@@ -75,11 +75,12 @@ export async function viewCard(employeeId: number, password: string) {
         if (card.password !== null && cryptr.decrypt(card.password) === password) {
             const cvc = cryptr.decrypt(card.securityCode)
             const actualDate = dayjs().format("MM-YYYY").toString();
-
-            if (actualDate > card.expirationDate) {
+           console.log(actualDate.length, card.expirationDate.length)
+            if (actualDate < card.expirationDate) {
                 throw { code: "unauthorized", message: "card is expired" }
 
             }
+
             const cards = {
                 number: card.number,
                 cardholderName: card.cardholderName,
