@@ -57,3 +57,18 @@ export async function verifyPassword(password: string, cardId: number) {
 }
 
 
+export async function calcBalance(rechages: any, transactions: any) {
+  console.log(rechages, transactions)
+  let amountR: number = 0
+  let amountT: number = 0
+
+  rechages.forEach(e => {
+    return amountR += e.amount;
+  })
+  transactions.forEach(e => {
+    return amountT += e.amount;
+  })
+
+  let balance: number = amountR = amountT;
+  return balance
+}

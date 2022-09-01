@@ -33,6 +33,7 @@ export async function viewTransectionAndBalance(req:Request,res: Response) {
         return res.sendStatus(401);
     }
     const num = Number(cardId)
-    await cardService.viewTransectionAndBalance(num)
-    res.sendStatus(httpStatus.OK)
+    const balanceAndTransections = await cardService.viewTransectionAndBalance(num)
+
+    res.status(httpStatus.OK).send(balanceAndTransections)
 }

@@ -100,11 +100,13 @@ export async function viewTransectionAndBalance(cardId: number) {
     if (!card) {
         throw { code: "not-found", message: "card was not found" }
     }
-    const transactions = await paymentRepository.findByCardId(cardId);
+    const shopping = await paymentRepository.findByCardId(cardId);
     const recharges = await rechargeRepository.findByCardId(cardId);
-     
-    
 
-   console.log(transactions,recharges)
-
+    const balance = await cardUtils.calcBalance(recharges, shopping)
+    return{
+        balance,
+        shopping,
+        recharges
+    }
 }
