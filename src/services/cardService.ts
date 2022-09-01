@@ -124,7 +124,7 @@ export async function blockCard(cardId: number, password:string) {
     if(card.isBlocked === true){
         throw { code: "unauthorized", message: "your card is blocked" }
     }
-    await cardUtils.verifyPassword(password,cardId)
+    await cardUtils.decryptCode(cardId,password)
     await cardRepository.update(cardId, {isBlocked:true});
     return {typeCard: "blocked card"}
 } 
@@ -139,7 +139,7 @@ export async function unlockCard(cardId: number, password:string) {
     if(card.isBlocked === false){
         throw { code: "unauthorized", message: "your card is not  blocked" }
     }
-    await cardUtils.verifyPassword(password,cardId)
+    await cardUtils.decryptCode(cardId,password)
     await cardRepository.update(cardId, {isBlocked:false});
     return {typeCard: "unlocked card"}
 } 
