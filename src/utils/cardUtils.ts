@@ -50,7 +50,6 @@ export async function verifyPassword(password: string, cardId: number) {
   if (password.length === 4) {
     const encryptPass = cryptr.encrypt(password)
     await update(cardId, { password: encryptPass });
-    return { status: "updated" };
   } else {
     throw { code: "unauthorized", message: "your password must be 4 characters " }
   }

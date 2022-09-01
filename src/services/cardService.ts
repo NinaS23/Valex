@@ -103,8 +103,11 @@ export async function viewTransectionAndBalance(cardId: number) {
     const shopping = await paymentRepository.findByCardId(cardId);
     const recharges = await rechargeRepository.findByCardId(cardId);
 
+    if (shopping.length === 0 || recharges.length === 0) {
+        throw { code: "no-content", message: "no recharges or transections found" }
+    }
     const balance = await cardUtils.calcBalance(recharges, shopping)
-    return{
+    return {
         balance,
         shopping,
         recharges
