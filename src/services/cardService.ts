@@ -63,8 +63,8 @@ export async function viewCard(employeeId: number, password: string) {
     const cardArr = []
     const result = await cardRepository.findByEmployeeId(employeeId)
 
-    if (!result) {
-        throw { code: "not-found", message: "no card found" }
+    if (!result || !password) {
+        throw { code: "not-found", message: "not found" }
     }
     if (password.length !== 4) {
         throw { code: "unauthorized", message: "verify your password" }
