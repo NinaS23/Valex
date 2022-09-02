@@ -1,5 +1,6 @@
 import { NextFunction, Request, Response } from "express";
 import { rechargeSchema } from "../schemas/rechargeSchema.js";
+import httpStatus from "../utils/httpStatus.js";
 
 export async function validateRechargeInfo(req: Request, res: Response, next: NextFunction) {
     const {amount} : {amount : number} = req.body
@@ -7,11 +8,11 @@ export async function validateRechargeInfo(req: Request, res: Response, next: Ne
     const cardId = req.params.id;
     
     if(amount  === 0){
-        return res.status(401).send("0 não é permitido");
+        return res.status(httpStatus.UNAUTHORIZED).send("0 não é permitido");
     }
     const { error } = rechargeSchema.validate({apiKey, cardId, amount}, {abortEarly: false});
     if (error) {
-        return res.status(422).send(error.details.map(detail => detail.message));
+        return res.status(httpStatus.UNPROCESSABLE_ENTITY).send(error.details.map(detail => detail.message));
     }
 
     next();

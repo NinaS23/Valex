@@ -29,7 +29,7 @@ export async function viewCard(req:Request,res: Response) {
 export async function viewTransectionAndBalance(req:Request,res: Response) {
     const cardId = req.params.id;
     if (!cardId ) {
-        return res.sendStatus(401);
+        return res.sendStatus(httpStatus.UNAUTHORIZED);
     }
     const num = Number(cardId)
     const balanceAndTransections = await cardService.viewTransectionAndBalance(num)

@@ -1,6 +1,7 @@
 import { NextFunction, Request, Response } from "express";
 import { cardSchema } from "../schemas/cardSchema.js";
 import * as cardRepository from "../repositories/cardRepository.js";
+import httpStatus from "../utils/httpStatus.js";
 
 
 export async function validateCardInfo(req: Request, res: Response, next: NextFunction) {
@@ -10,7 +11,7 @@ export async function validateCardInfo(req: Request, res: Response, next: NextFu
     const { error } = cardSchema.validate({apiKey,employeeId,type}, {abortEarly: false});
    
     if (error) {
-        return res.status(422).send(error.details.map(detail => detail.message));
+        return res.status(httpStatus.UNPROCESSABLE_ENTITY).send(error.details.map(detail => detail.message));
     }
 
     next();

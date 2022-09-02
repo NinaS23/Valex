@@ -10,6 +10,6 @@ export default async function errorHandler(error, req, res, next) {
    if(error.code === "no-content"){
     return res.status(httpStatus.NO_CONTENT).send(error.message)
    }
-    res.sendStatus(500)
+    res.sendStatus(httpStatus.INTERNAL_SERVER_ERROR)
     console.log(error)
   }
