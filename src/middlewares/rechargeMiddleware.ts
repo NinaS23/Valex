@@ -8,7 +8,7 @@ export async function validateRechargeInfo(req: Request, res: Response, next: Ne
     const cardId = req.params.id;
     
     if(amount  === 0){
-        return res.status(httpStatus.UNAUTHORIZED).send("0 não é permitido");
+        return res.status(httpStatus.UNAUTHORIZED).send("amout 0 is not allowed");
     }
     const { error } = rechargeSchema.validate({apiKey, cardId, amount}, {abortEarly: false});
     if (error) {
