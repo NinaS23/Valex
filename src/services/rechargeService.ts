@@ -9,7 +9,7 @@ export async function rechargeCard(cardId: number, apiKey:string, amount:number)
         throw { code: "not-found", message: "api-key is not Found" }
     }
     const findRechargeCard = await rechargeRepository.findByCardId(cardId);
-    if (!findRechargeCard) {
+    if (findRechargeCard.length === 0) {
         throw { code: "not-found", message: "card was not found" }
     }
     
