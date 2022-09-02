@@ -5,33 +5,45 @@ import * as rechargeRepository from "../repositories/rechargeRepository.js";
 import * as cardUtils from "../utils/cardUtils.js";
 
 export async function rechargeCard(cardId: number, password:string, amount:number) {
-  const cardPayment = await paymentRepository.findByCardId(cardId)
-  if(cardPayment.length === 0){
-      throw { code: "not-found", message: "card was not found"}
-  }
-  const card = await cardRepository.findById(cardId);
-  await cardUtils.isCardActivade(card.password);
-  await cardUtils.isCardExpired(card.expirationDate);
-  await cardUtils.decryptCode(password,card.password);
-  if(card.isBlocked === true){
-    throw { code: "unauthorized", message: "your card is blocked"}
-  }
-  const isBussinesRegistered = await businessesRepository.findById(cardPayment[0].businessId)
-  if(!isBussinesRegistered){
-    throw { code: "unauthorized", message: "bussines is not allowed"}
-  }
-  console.log(isBussinesRegistered)
-    if (isBussinesRegistered.type !== card.type) {
-        throw { code: "unauthorized", message: "type is diferent" }
+    const paymentBussines = await findPayment(cardId)
+    const card = await cardRepository.findById(cardId);
+    await cardUtils.isCardActivade(card.password);
+    await cardUtils.isCardExpired(card.expirationDate);
+    await cardUtils.decryptCode(password, card.password);
+    if (card.isBlocked === true) {
+        throw { code: "unauthorized", message: "your card is blocked"}
     }
+    const isBussinesRegistered = await businessesRepository.findById(paymentBussines[0].businessId)
+    await checkBussinesInfo(isBussinesRegistered, card.type)
     const businessId = isBussinesRegistered.id
-    const transactions = await paymentRepository.findByCardId(cardId);
-    const recharges = await rechargeRepository.findByCardId(cardId);
-    const balance = await cardUtils.calcBalance(recharges,transactions)
-   
+    await getBalance(cardId,amount)
+        await paymentRepository.insert({cardId, businessId , amount}); 
+        return {shopping:"shopping done"}
+}
+
+async function findPayment(id:number) {
+    const cardPayment = await paymentRepository.findByCardId(id)
+    if(cardPayment.length === 0){
+        throw { code: "not-found", message: "card was not found"}
+    }
+    return cardPayment;
+}
+
+async function checkBussinesInfo(bussines:any, cardType:string) {
+    if(!bussines){
+        throw { code: "unauthorized", message: "bussines is not allowed"}
+      }
+      console.log(bussines)
+        if (bussines.type !== cardType) {
+            throw { code: "unauthorized", message: "type is diferent" }
+        }
+}
+
+async function getBalance(id:number,amount:number) {
+    const transactions = await paymentRepository.findByCardId(id);
+    const recharges = await rechargeRepository.findByCardId(id);
+    const balance = await cardUtils.calcBalance(recharges, transactions)
         if(balance < amount){
             throw { code: "unauthorized", message: "balance cant cover acount"}
         }
-        await paymentRepository.insert({cardId, businessId , amount}); 
-        return {shopping:"shopping done"}
 }
