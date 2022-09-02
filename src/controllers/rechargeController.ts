@@ -11,6 +11,6 @@ export async function rechargeCard(req: Request, res: Response) {
         return res.sendStatus(401);
     }
     const num = Number(cardId)
-    await rechargeService.rechargeCard(num,apiKey,amount)
-    res.sendStatus(httpStatus.OK)
+    const isCardRecharge = await rechargeService.rechargeCard(num,apiKey,amount)
+    res.status(httpStatus.OK).send(isCardRecharge)
 }

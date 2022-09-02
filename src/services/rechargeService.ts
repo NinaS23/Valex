@@ -12,8 +12,13 @@ export async function rechargeCard(cardId: number, apiKey:string, amount:number)
     if (!findRechargeCard) {
         throw { code: "not-found", message: "card was not found" }
     }
+    
     const card = await cardRepository.findById(cardId);
     await cardUtils.isCardActivade(card.password)
     await cardUtils.isCardExpired(card.expirationDate)
+
+    await rechargeRepository.insert({cardId,amount})
+
+    return {rechage: "your card is recharged"}
 
 }
