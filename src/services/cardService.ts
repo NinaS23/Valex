@@ -4,15 +4,13 @@ import * as cardRepository from "../repositories/cardRepository.js";
 import * as paymentRepository from "../repositories/paymentRepository.js";
 import * as rechargeRepository from "../repositories/rechargeRepository.js";
 import * as cardUtils from "../utils/cardUtils.js";
+import * as sqlUtils from "../utils/sqlUtils.js";
 import dayjs from "dayjs";
 import Cryptr from "cryptr";
 import { faker } from '@faker-js/faker';
 
 export async function createCard(apiKey: string, employeeId: number, type: cardRepository.TransactionTypes) {
-    const findAPiKey = await companyRepository.findByApiKey(apiKey)
-    if (!findAPiKey) {
-        throw { code: "not-found", message: "api-key is not Found" }
-    }
+    await sqlUtils.validateApiKey(apiKey);
     const findEmployer = await employeeRepository.findById(employeeId)
     if (!findEmployer) {
         throw { code: "not-found", message: "employer not found" }

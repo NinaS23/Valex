@@ -2,12 +2,10 @@ import * as companyRepository from "../repositories/companyRepository.js";
 import * as cardRepository from "../repositories/cardRepository.js";
 import * as rechargeRepository from "../repositories/rechargeRepository.js";
 import * as cardUtils from "../utils/cardUtils.js";
+import * as sqlUtils from "../utils/sqlUtils.js";
 
 export async function rechargeCard(cardId: number, apiKey:string, amount:number) {
-    const isApiKeyValid = await companyRepository.findByApiKey(apiKey)
-    if (!isApiKeyValid) {
-        throw { code: "not-found", message: "api-key is not Found" }
-    }
+    await sqlUtils.validateApiKey(apiKey)
     const findRechargeCard = await rechargeRepository.findByCardId(cardId);
     if (findRechargeCard.length === 0) {
         throw { code: "not-found", message: "card was not found" }
