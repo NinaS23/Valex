@@ -7,13 +7,23 @@
 - Backend Project
 - database: postgresSQL
 - card services 
-
 ## Routes
-- POST : "/create-card" => x-api-key (header), employeeId (body), type (body);
-- POST : "/activate-card" =>  cardId (body), password (body), CVC (body);
-- GET : "/view-transections/:id" => id (params);
-- POST : "/block-card" => cardId (body), password (body);
-- POST : "/block-card" => cardId (body), password (body);
-- POST : "/unlock-card" => cardId (body), password (body);
-- POST : "/recharge-card/:id" => id (params), x-api-key (header), amount (body);
-- POST : "/shopping/:id" => id (params), password (body), amount (body), bussinesId (body);
+<div>
+<h3> cardRouter </h3>
+<ul>
+	<li>POST : "/create-card" => x-api-key (header), employeeId (body), type (body);</li> 
+	<li>POST : "/activate-card" =>  cardId (body), password (body), CVC (body);
+	<li>GET : "/view-transections/:id" => id (params);</li>
+	<li>POST : "/block-card" => cardId (body), password (body);</li>
+	<li>POST : "/block-card" => cardId (body), password (body);</li>
+	<li>POST : "/unlock-card" => cardId (body), password (body);</li>
+</ul>
+<h3>rechargeRouter</h3>
+<ul>
+	<li>POST : "/recharge-card/:id" => id (params), x-api-key (header), amount (body);</li>
+</ul>
+<h3>shoppingRouter</h3>
+<ul>
+ 	<li>POST : "/shopping/:id" => id (params), password (body), amount (body), bussinesId (body);</li>
+</ul>
+</div>
