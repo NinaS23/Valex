@@ -4,7 +4,7 @@ import * as paymentRepository from "../repositories/paymentRepository.js";
 import * as rechargeRepository from "../repositories/rechargeRepository.js";
 import * as cardUtils from "../utils/cardUtils.js";
 
-export async function rechargeCard(cardId: number, password: string, amount: number) {
+export async function shopping(cardId: number, password: string, amount: number) {
     const paymentBussines = await findPayment(cardId);
     const card = await cardRepository.findById(cardId);
     const isBussinesRegistered = await businessesRepository.findById(paymentBussines[0].businessId);

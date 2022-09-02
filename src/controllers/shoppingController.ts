@@ -9,6 +9,6 @@ export async function shoppingCard(req: Request, res: Response) {
         return res.sendStatus(httpStatus.UNAUTHORIZED);
     }
     const num = Number(cardId)
-    const shopping = await shoppingService.rechargeCard(num, password, amount)
+    const shopping = await shoppingService.shopping(num, password, amount)
     res.status(httpStatus.OK).send(shopping)
 }
