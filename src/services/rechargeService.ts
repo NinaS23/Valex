@@ -5,12 +5,7 @@ import * as cardUtils from "../utils/cardUtils.js";
 import * as sqlUtils from "../utils/sqlUtils.js";
 
 export async function rechargeCard(cardId: number, apiKey:string, amount:number) {
-    await sqlUtils.validateApiKey(apiKey)
-    const findRechargeCard = await rechargeRepository.findByCardId(cardId);
-    if (findRechargeCard.length === 0) {
-        throw { code: "not-found", message: "card was not found" }
-    }
-    
+    await sqlUtils.validateApiKey(apiKey)    
     const card = await cardRepository.findById(cardId);
     await cardUtils.isCardActivade(card.password)
     await cardUtils.isCardExpired(card.expirationDate)
