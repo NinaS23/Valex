@@ -51,3 +51,4 @@ async function getBalance(id:number,amount:number) {
             throw { code: "unauthorized", message: "balance cant cover acount"}
         }
 }
+

@@ -24,6 +24,7 @@ export async function createCard(apiKey: string, employeeId: number, type: cardR
     const cardNumber = faker.finance.creditCardNumber();
     const expirationDate = dayjs().add(5, 'year').format("MM-YYYY");
     const code = faker.random.numeric(3);
+    console.log(code)
     const cryptCode = await cardUtils.encryptCardCVC(code)
 
     const card: cardRepository.CardInsertData = {

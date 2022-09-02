@@ -12,3 +12,4 @@ export async function shoppingCard(req: Request, res: Response) {
     const shopping = await shoppingService.shopping(num, password, amount)
     res.status(httpStatus.OK).send(shopping)
 }
+

@@ -30,7 +30,7 @@ export async function encryptCardCVC(encode:string){
 export async function isCardExpired(date:string){
   const actualDate = dayjs().format("MM-YYYY");
 
-  if(actualDate < date){
+  if(actualDate > date){
     throw{ code: "unauthorized",message: "card is expired"}
    
   }
@@ -46,15 +46,17 @@ export async function isCardActivade(password: string) {
 }
 
 export async function decryptCode(code:any, encode: string ){
+  console.log("Oi")
   const cryptr = new Cryptr(process.env.CRYPTR_KEY);
   const decrypt = cryptr.decrypt(encode);
-
-  if(decrypt !== code){
+ 
+  if(decrypt != code){
     throw { code: "unauthorized", message: "verify your key" }
   }
 }
 
 export async function verifyPassword(password: string, cardId: number) {
+ 
   const cryptr = new Cryptr(process.env.CRYPTR_KEY);
   if (password.length === 4) {
     const encryptPass = cryptr.encrypt(password)
