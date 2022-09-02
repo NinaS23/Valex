@@ -4,21 +4,23 @@ import * as paymentRepository from "../repositories/paymentRepository.js";
 import * as rechargeRepository from "../repositories/rechargeRepository.js";
 import * as cardUtils from "../utils/cardUtils.js";
 
-export async function rechargeCard(cardId: number, password:string, amount:number) {
-    const paymentBussines = await findPayment(cardId)
+export async function rechargeCard(cardId: number, password: string, amount: number) {
+    const paymentBussines = await findPayment(cardId);
     const card = await cardRepository.findById(cardId);
+    const isBussinesRegistered = await businessesRepository.findById(paymentBussines[0].businessId);
+    const businessId = isBussinesRegistered.id;
     await cardUtils.isCardActivade(card.password);
     await cardUtils.isCardExpired(card.expirationDate);
     await cardUtils.decryptCode(password, card.password);
-    if (card.isBlocked === true) {
-        throw { code: "unauthorized", message: "your card is blocked"}
-    }
-    const isBussinesRegistered = await businessesRepository.findById(paymentBussines[0].businessId)
     await checkBussinesInfo(isBussinesRegistered, card.type)
-    const businessId = isBussinesRegistered.id
-    await getBalance(cardId,amount)
-        await paymentRepository.insert({cardId, businessId , amount}); 
-        return {shopping:"shopping done"}
+    await getBalance(cardId, amount);
+   
+    if (card.isBlocked === true) {
+        throw { code: "unauthorized", message: "your card is blocked" }
+    }
+
+    await paymentRepository.insert({ cardId, businessId, amount });
+    return { shopping: "shopping done" }
 }
 
 async function findPayment(id:number) {
@@ -33,7 +35,6 @@ async function checkBussinesInfo(bussines:any, cardType:string) {
     if(!bussines){
         throw { code: "unauthorized", message: "bussines is not allowed"}
       }
-      console.log(bussines)
         if (bussines.type !== cardType) {
             throw { code: "unauthorized", message: "type is diferent" }
         }
