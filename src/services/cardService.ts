@@ -45,10 +45,7 @@ export async function createCard(apiKey: string, employeeId: number, type: cardR
 
 
 export async function activateCard(cardId: number, password: string, CVC: number) {
-    const card = await cardRepository.findById(cardId);
-    if (!card) {
-        throw { code: "not-found", message: "card was not found" }
-    }
+    const card = await sqlUtils.findCardById(cardId)
     if (card.password !== null) {
         throw { code: "unauthorized", message: "password alredy exist" }
     }
@@ -95,10 +92,7 @@ export async function viewCard(employeeId: number, password: string) {
 
 
 export async function viewTransectionAndBalance(cardId: number) {
-    const card = await cardRepository.findById(cardId);
-    if (!card) {
-        throw { code: "not-found", message: "card was not found" }
-    }
+     await sqlUtils.findCardById(cardId)
     const shopping = await paymentRepository.findByCardId(cardId);
     const recharges = await rechargeRepository.findByCardId(cardId);
 
@@ -114,10 +108,7 @@ export async function viewTransectionAndBalance(cardId: number) {
 }
 
 export async function blockCard(cardId: number, password:string) {
-    const card = await cardRepository.findById(cardId);
-    if (!card) {
-        throw { code: "not-found", message: "card was not found" }
-    }
+   const card = await sqlUtils.findCardById(cardId)
     await cardUtils.isCardExpired(card.expirationDate);
     if(card.isBlocked === true){
         throw { code: "unauthorized", message: "your card is blocked" }
@@ -129,10 +120,7 @@ export async function blockCard(cardId: number, password:string) {
 
 
 export async function unlockCard(cardId: number, password:string) {
-    const card = await cardRepository.findById(cardId);
-    if (!card) {
-        throw { code: "not-found", message: "card was not found" }
-    }
+    const card = await sqlUtils.findCardById(cardId)
     await cardUtils.isCardExpired(card.expirationDate);
     if(card.isBlocked === false){
         throw { code: "unauthorized", message: "your card is not  blocked" }

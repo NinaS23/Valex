@@ -1,4 +1,5 @@
 import * as companyRepository from "../repositories/companyRepository.js";
+import * as cardRepository from "../repositories/cardRepository.js";
 
 export function mapObjectToUpdateQuery({ object, offset = 1 }) {
   const objectColumns = Object.keys(object)
@@ -17,3 +18,13 @@ export async function validateApiKey(apiKey:string) {
   }
 
 }
+
+export async function findCardById(cardId:number) {
+  const card = await cardRepository.findById(cardId);
+    if (!card) {
+        throw { code: "not-found", message: "card was not found" }
+    }
+    return card;
+
+}
+
