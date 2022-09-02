@@ -1,6 +1,6 @@
 # valex
 <div align="center">
-	<img src="https://emojipedia-us.s3.amazonaws.com/source/skype/289/pizza_1f355.png">
+	<img src="https://emojipedia-us.s3.amazonaws.com/source/skype/289/credit-card_1f4b3.png">
 </div>
 
 ## About the project 
