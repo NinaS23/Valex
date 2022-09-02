@@ -1,4 +1,4 @@
-import * as companyRepository from "../repositories/companyRepository.js";
+
 import * as employeeRepository from "../repositories/employeeRepository.js";
 import * as cardRepository from "../repositories/cardRepository.js";
 import * as paymentRepository from "../repositories/paymentRepository.js";
@@ -37,7 +37,7 @@ export async function createCard(apiKey: string, employeeId: number, type: cardR
         originalCardId: null,
         isBlocked: false,
         type
-    }//mudar na ativação
+    }
     await cardRepository.insert(card);
 
     return card;
@@ -92,7 +92,7 @@ export async function viewCard(employeeId: number, password: string) {
 
 
 export async function viewTransectionAndBalance(cardId: number) {
-     await sqlUtils.findCardById(cardId)
+    await sqlUtils.findCardById(cardId)
     const shopping = await paymentRepository.findByCardId(cardId);
     const recharges = await rechargeRepository.findByCardId(cardId);
 
