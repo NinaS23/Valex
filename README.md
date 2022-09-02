@@ -24,7 +24,7 @@
 </ul>
 <h3>shoppingRouter</h3>
 <ul>
- 	<li>POST : "/shopping/:id" => id (params), password (body), amount (body), bussinesId (body);</li>
+ 	<li>POST : "/shopping/:id" => id (params), password (body), amount (body), businessId (body);</li>
 </ul>
 </div>
 
