@@ -4,11 +4,11 @@ import * as paymentRepository from "../repositories/paymentRepository.js";
 import * as rechargeRepository from "../repositories/rechargeRepository.js";
 import * as cardUtils from "../utils/cardUtils.js";
 
-export async function shopping(cardId: number, password: string, amount: number) {
-    const paymentBussines = await findPayment(cardId);
+export async function shopping(cardId: number, password: string, amount: number, businessId:number) {
     const card = await cardRepository.findById(cardId);
-    const isBussinesRegistered = await businessesRepository.findById(paymentBussines[0].businessId);
-    const businessId = isBussinesRegistered.id;
+    const bussines = await findBussiness(businessId);
+    const isBussinesRegistered = await businessesRepository.findById(bussines.id);
+
     await cardUtils.isCardActivade(card.password);
     await cardUtils.isCardExpired(card.expirationDate);
     await cardUtils.decryptCode(password, card.password);
@@ -23,12 +23,13 @@ export async function shopping(cardId: number, password: string, amount: number)
     return { shopping: "shopping done" }
 }
 
-async function findPayment(id:number) {
-    const cardPayment = await paymentRepository.findByCardId(id)
-    if(cardPayment.length === 0){
-        throw { code: "not-found", message: "card was not found"}
+async function findBussiness(id:number) {
+    const business = await businessesRepository.findById(id)
+    console.log(business)
+    if(!business){
+        throw { code: "not-found", message: "Bussiness was not found"}
     }
-    return cardPayment;
+    return business;
 }
 
 async function checkBussinesInfo(bussines:any, cardType:string) {
@@ -43,9 +44,7 @@ async function checkBussinesInfo(bussines:any, cardType:string) {
 async function getBalance(id:number,amount:number) {
     const transactions = await paymentRepository.findByCardId(id);
     const recharges = await rechargeRepository.findByCardId(id);
-    if (transactions.length === 0 || recharges.length === 0) {
-        throw { code: "no-content", message: "no recharges or transections found" }
-    }
+  
     const balance = await cardUtils.calcBalance(recharges, transactions)
         if(balance < amount){
             throw { code: "unauthorized", message: "balance cant cover acount"}
