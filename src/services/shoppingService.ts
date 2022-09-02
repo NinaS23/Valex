@@ -43,6 +43,9 @@ async function checkBussinesInfo(bussines:any, cardType:string) {
 async function getBalance(id:number,amount:number) {
     const transactions = await paymentRepository.findByCardId(id);
     const recharges = await rechargeRepository.findByCardId(id);
+    if (transactions.length === 0 || recharges.length === 0) {
+        throw { code: "no-content", message: "no recharges or transections found" }
+    }
     const balance = await cardUtils.calcBalance(recharges, transactions)
         if(balance < amount){
             throw { code: "unauthorized", message: "balance cant cover acount"}
