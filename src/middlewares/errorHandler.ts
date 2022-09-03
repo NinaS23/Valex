@@ -11,5 +11,5 @@ export default async function errorHandler(error, req, res, next) {
     return res.status(httpStatus.NO_CONTENT).send(error.message)
    }
     res.sendStatus(httpStatus.INTERNAL_SERVER_ERROR)
-    console.log(error)
+    
   }
