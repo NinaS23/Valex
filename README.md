@@ -13,18 +13,17 @@
 <ul>
 	<li>POST : "/create-card" => x-api-key (header), employeeId (body), type (body);</li> 
 	<li>POST : "/activate-card" =>  cardId (body), password (body), CVC (body);
-	<li>GET : "/view-transections/:id" => id (params);</li>
-	<li>POST : "/block-card" => cardId (body), password (body);</li>
+	<li>GET : "/view-transections/:id" => cardId (params);</li>
 	<li>POST : "/block-card" => cardId (body), password (body);</li>
 	<li>POST : "/unlock-card" => cardId (body), password (body);</li>
 </ul>
 <h3>rechargeRouter</h3>
 <ul>
-	<li>POST : "/recharge-card/:id" => id (params), x-api-key (header), amount (body);</li>
+	<li>POST : "/recharge-card/:id" => cardId (params), x-api-key (header), amount (body);</li>
 </ul>
 <h3>shoppingRouter</h3>
 <ul>
- 	<li>POST : "/shopping/:id" => id (params), password (body), amount (body), businessId (body);</li>
+ 	<li>POST : "/shopping/:id" => cardId (params), password (body), amount (body), businessId (body);</li>
 </ul>
 </div>
 
